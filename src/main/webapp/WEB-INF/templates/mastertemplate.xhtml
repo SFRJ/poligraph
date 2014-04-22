@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+        <title><ui:insert name="pagetitle">Happiness monitor</ui:insert></title>
+        <meta http-equiv="cache-control" content="max-age=0" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <meta http-equiv="expires" content="0" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <ui:insert name="redirection">
+        </ui:insert>
+</h:head>
+
+<h:body>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <h1>Polygraph V1 - A happiness monitor for the team</h1>
+    <p:panel id="mainpanel">
+        <ui:insert name="content">
+            Polygraph V1 mastertemplate
+        </ui:insert>
+    </p:panel>
+</h:body>
+
+</html>

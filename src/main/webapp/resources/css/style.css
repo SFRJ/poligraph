@@ -1,0 +1,30 @@
+.centered {
+    position: absolute;
+    height: 100px;
+    top: 0;
+    bottom: 0;
+}
+
+h1 {
+    color: #999999;
+    font-size: 50pt;
+}
+
+#poly-image {
+    width: 500px;
+    height: 500px;
+}
+
+#application-description {
+    font-size: 20pt;
+}
+
+#yesterday-image {
+    width: 300px;
+    height: 300px;
+}
+
+.fivedays-img {
+    width: 200px;
+    height: 200px;
+}

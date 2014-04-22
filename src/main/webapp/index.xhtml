@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+        <ui:composition template="WEB-INF/templates/mastertemplate.xhtml">
+
+            <h1>Plolygraph V1 - A happiness monitor for the team</h1>
+
+            <ui:define name="redirection">
+                <meta http-equiv="refresh" content="10;URL='yesterday.xhtml'" />
+            </ui:define>
+
+
+            <ui:define name="content">
+                <h:panelGrid columns="2" cellpadding="10" id="application-description">
+                    <h:graphicImage name="polygraph.png" library="images" id="poly-image"/>
+                    <p>Welcome to Polygraph V1,<br/>
+                       This application monitors the mood of team.<br/>
+                       Every working day at 5.00pm the polygraph will ask to each team member, <b>How was your day?</b><br/>
+                       The answers will be used to determine the overall mood of the team across time<br/>
+                       <br/>
+                        Why team mood monitor is good?
+                    </p>
+
+                    <ul>
+                        <li>Temperature reading(Does the team need a retrospective?)</li>
+                        <li>Show how key events in the office can affect team members mood</li>
+                        <li>Anticipate job quit/resignation</li>
+                        <li>Encorage communication about issues</li>
+                        <li>Show to others what is like to work in the team</li>
+                        <li>Because we believe in better...</li>
+                    </ul>
+                </h:panelGrid>
+            </ui:define>
+
+        </ui:composition>
+
+</html>
