@@ -14,13 +14,13 @@ import static votes.VotePoll.castVote;
 public class VoteHappy {
 
     @GET
-    public void vote(@QueryParam("email") String email) {
+    public String vote(@QueryParam("email") String email) {
         System.out.println(email + " reached the happy endpoint");
         try {
-            castVote(email, 'H');
-            System.out.println(email + " voted happy");
+            return castVote(email, 'H');
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

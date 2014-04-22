@@ -15,11 +15,12 @@ import static votes.VotePoll.castVote;
 public class VoteSad {
 
     @GET
-    public void vote(@QueryParam("email") String email) {
+    public String vote(@QueryParam("email") String email) {
         try {
             castVote(email,'S');
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
