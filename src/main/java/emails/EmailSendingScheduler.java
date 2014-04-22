@@ -51,7 +51,6 @@ public final class EmailSendingScheduler extends TimerTask implements Serializab
 
     @Override
     public void run() {
-        //TODO Application currently will need a restart if new emails are added to the file, try to improve that.
         if(isWeekend()) return;
         try {
             cleanupvotingblacklist();

@@ -10,7 +10,6 @@ import static votes.VoteValidator.validateAlreadyVoted;
 
 public class VotePoll {
 
-    //TODO don't allow an email to vote more than once in the same day.
     public static String castVote(String email, char mood) throws IOException {
         String outputMessage = null;
         outputMessage = checkIfThePersonAlreadyVoted(email);
@@ -26,7 +25,6 @@ public class VotePoll {
     }
 
     private static String performVote(String email, char mood) throws IOException {
-        //TODO Make folder with the name in the format day_month_year
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
         String date = sdf.format(new Date());
         String pathToVotesPoll = "votespoll";
