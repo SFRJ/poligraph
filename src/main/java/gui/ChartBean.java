@@ -86,12 +86,9 @@ public class ChartBean implements Serializable {
     private CartesianChartModel createCategoryModel(int numberOfDays) throws IOException {
         CartesianChartModel categoryModel = new CartesianChartModel();
 
-        ChartSeries happyVotes = new ChartSeries();
-        happyVotes.setLabel("Happy votes");
-        ChartSeries neutralVotes = new ChartSeries();
-        neutralVotes.setLabel("Neutral votes");
-        ChartSeries sadVotes = new ChartSeries();
-        sadVotes.setLabel("Sad votes");
+        ChartSeries happyVotes = new ChartSeries("Happy votes");
+        ChartSeries neutralVotes = new ChartSeries("Neutral votes");
+        ChartSeries sadVotes = new ChartSeries("Sad votes");
 
         List<File> files = asList(new File("votespoll").listFiles());
         sort(files);
