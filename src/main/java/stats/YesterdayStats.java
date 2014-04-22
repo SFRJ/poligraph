@@ -12,7 +12,7 @@ import static stats.DayStatistics.fromFile;
 import static utils.DateUtils.SortOrder.DESC;
 import static utils.DateUtils.*;
 
-public class YesterdaysStats {
+public class YesterdayStats {
 
     public String fileName() {
         Date mostRecentDate = parseFromFile(getMostRecentVoteFile());

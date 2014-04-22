@@ -1,6 +1,6 @@
 package gui;
 
-import stats.YesterdaysStats;
+import stats.YesterdayStats;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -12,7 +12,7 @@ public class YesterdayMood {
 
 
     public String getImageName() {
-        YesterdaysStats stats = new YesterdaysStats();
+        YesterdayStats stats = new YesterdayStats();
         try {
             return stats.mood();
         } catch (IOException e) {
@@ -22,7 +22,7 @@ public class YesterdayMood {
     }
 
     public String getDate() {
-        YesterdaysStats stats = new YesterdaysStats();
+        YesterdayStats stats = new YesterdayStats();
         return stats.fileName();
     }
 
