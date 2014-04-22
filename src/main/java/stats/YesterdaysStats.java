@@ -2,24 +2,25 @@ package stats;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import static java.lang.Math.round;
 import static java.util.Arrays.asList;
+import static java.util.Collections.sort;
 import static org.apache.commons.io.FileUtils.readFileToString;
+import static utils.DateUtils.SortOrder.DESC;
+import static utils.DateUtils.*;
 
 public class YesterdaysStats {
 
     public String fileName() {
-        File[] votespolls = new File("votespoll").listFiles();
-        return latestDate(sortFiles(asList(votespolls)));
+        Date mostRecentDate = parseFromFile(getMostRecentVoteFile());
+        return format(mostRecentDate);
     }
 
     public String mood() throws IOException {
-        File[] votespolls = new File("votespoll").listFiles();
-        String fileContent = readFileToString(sortFiles(asList(votespolls)).get(0));
+        String fileContent = readFileToString(getMostRecentVoteFile());
         int happyVotes = 0;
         int neutralVotes = 0;
         int sadVotes = 0;
@@ -34,21 +35,10 @@ public class YesterdaysStats {
         return resolveMood(happyVotes, neutralVotes, sadVotes);
     }
 
-    private List<File> sortFiles(List<File> files) {
-        Collections.sort(files, new Comparator<File>() {
-            @Override
-            public int compare(File file1, File file2) {
-                Date dateFile1 = customDate(file1);
-                Date dateFile2 = customDate(file2);
-                return dateFile2.compareTo(dateFile1);
-            }
-        });
-        return files;
-    }
-
-    private String latestDate(List<File> files) {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return format.format(customDate(files.get(0)));
+    private File getMostRecentVoteFile() {
+        List<File> voteFiles = asList(new File("votespoll").listFiles());
+        sort(voteFiles, fileSorter(DESC));
+        return voteFiles.get(0);
     }
 
     private String resolveMood(int happyVotes, int neutralVotes, int sadVotes) {
@@ -56,10 +46,5 @@ public class YesterdaysStats {
         if (totalVotes == 0) return "neutralbig.jpg";
         double average = (happyVotes * 2 + neutralVotes * 1 + sadVotes * 0) / (double) totalVotes;
         return asList("sadbig.jpg", "neutralbig.jpg", "happybig.jpg").get((int) round(average));
-    }
-
-    private Date customDate(File currentFile) {
-        SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy");
-        return format.parse(currentFile.getName().replace(".txt",""), new ParsePosition(0));
     }
 }
