@@ -8,7 +8,7 @@ import java.util.List;
 import static java.lang.Math.round;
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
-import static org.apache.commons.io.FileUtils.readFileToString;
+import static stats.DayStatistics.fromFile;
 import static utils.DateUtils.SortOrder.DESC;
 import static utils.DateUtils.*;
 
@@ -20,19 +20,8 @@ public class YesterdaysStats {
     }
 
     public String mood() throws IOException {
-        String fileContent = readFileToString(getMostRecentVoteFile());
-        int happyVotes = 0;
-        int neutralVotes = 0;
-        int sadVotes = 0;
-        for (int currentCharacter = 0; currentCharacter < fileContent.length(); currentCharacter++) {
-            if(fileContent.charAt(currentCharacter) == 'H')
-                happyVotes++;
-            if(fileContent.charAt(currentCharacter) == 'N')
-                neutralVotes++;
-            if(fileContent.charAt(currentCharacter) == 'S')
-                sadVotes++;
-        }
-        return resolveMood(happyVotes, neutralVotes, sadVotes);
+        DayStatistics stats = fromFile(getMostRecentVoteFile());
+        return resolveMood(stats.getHappyVotes(), stats.getNeutralVotes(), stats.getSadVotes());
     }
 
     private File getMostRecentVoteFile() {

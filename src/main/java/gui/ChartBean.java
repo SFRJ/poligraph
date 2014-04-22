@@ -3,6 +3,7 @@ package gui;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
+import stats.DayStatistics;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
-import static org.apache.commons.io.FileUtils.readFileToString;
 import static utils.DateUtils.format;
 import static utils.DateUtils.parseFromFile;
 
@@ -60,11 +60,9 @@ public class ChartBean implements Serializable {
     }
 
     private AverageAndDate calculateAverage(File file) throws IOException {
-
-        Stats stats = Stats.create(file);
+        DayStatistics stats = DayStatistics.fromFile(file);
         double average = (stats.getHappyVotes() * 2 + stats.getNeutralVotes() * 1 + stats.getSadVotes() * 0) / (double) file.length();
-        Date date = parseFromFile(file);
-        return new AverageAndDate(new Double(average), format(date));
+        return new AverageAndDate(new Double(average), format(stats.getDay()));
     }
 
     private static class AverageAndDate {
@@ -89,16 +87,16 @@ public class ChartBean implements Serializable {
         CartesianChartModel categoryModel = new CartesianChartModel();
 
         ChartSeries happyVotes = new ChartSeries();
-        happyVotes.setLabel("happy votes");
+        happyVotes.setLabel("Happy votes");
         ChartSeries neutralVotes = new ChartSeries();
-        neutralVotes.setLabel("neutral votes");
+        neutralVotes.setLabel("Neutral votes");
         ChartSeries sadVotes = new ChartSeries();
-        sadVotes.setLabel("sad votes");
+        sadVotes.setLabel("Sad votes");
 
         List<File> files = asList(new File("votespoll").listFiles());
         sort(files);
         for (File file : files.subList(0, numberOfDays)) {
-            Stats stats = Stats.create(file);
+            DayStatistics stats = DayStatistics.fromFile(file);
             Date date = parseFromFile(file);
             happyVotes.set(format(date), stats.getHappyVotes());
             neutralVotes.set(format(date), stats.getNeutralVotes());
@@ -110,46 +108,6 @@ public class ChartBean implements Serializable {
         categoryModel.addSeries(sadVotes);
 
         return categoryModel;
-    }
-
-    private static class Stats {
-        private int happyVotes;
-        private int neutralVotes;
-        private int sadVotes;
-
-        private Stats(int happyVotes, int neutralVotes, int sadVotes) {
-            this.happyVotes = happyVotes;
-            this.neutralVotes = neutralVotes;
-            this.sadVotes = sadVotes;
-        }
-
-        public static Stats create(File file) throws IOException {
-            String fileContent = readFileToString(file);
-            int happyVotes = 0;
-            int neutralVotes = 0;
-            int sadVotes = 0;
-            for (int currentCharacter = 0; currentCharacter < fileContent.length(); currentCharacter++) {
-                if(fileContent.charAt(currentCharacter) == 'H')
-                    happyVotes++;
-                if(fileContent.charAt(currentCharacter) == 'N')
-                    neutralVotes++;
-                if(fileContent.charAt(currentCharacter) == 'S')
-                    sadVotes++;
-            }
-            return new Stats(happyVotes, neutralVotes, sadVotes);
-        }
-
-        public int getHappyVotes() {
-            return happyVotes;
-        }
-
-        public int getNeutralVotes() {
-            return neutralVotes;
-        }
-
-        public int getSadVotes() {
-            return sadVotes;
-        }
     }
 
 }
