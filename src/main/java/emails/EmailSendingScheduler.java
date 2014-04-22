@@ -1,7 +1,5 @@
 package emails;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -16,7 +14,6 @@ public final class EmailSendingScheduler extends TimerTask implements Serializab
         scheduleEmailSending();
     }
 
-    //1000 miliseconds in 1 second X 60 seconds X 60 minutes X 24 hours
     private final static long ONCE_PER_DAY = 1000 * 60 * 60 * 24;
 
     private static void scheduleEmailSending() {
@@ -41,12 +38,6 @@ public final class EmailSendingScheduler extends TimerTask implements Serializab
                 minute
         );
         return result.getTime();
-    }
-
-    //Just leave this here in case you want to schedule in 60 seconds for testing purposes
-    private static Date after60Seconds() {
-        long timeIn6Seconds = new Date().getTime() + (1000 * 60);
-        return new Date(timeIn6Seconds);
     }
 
     @Override
