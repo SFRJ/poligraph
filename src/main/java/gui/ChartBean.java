@@ -1,32 +1,27 @@
 package gui;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.sort;
 import static org.apache.commons.io.FileUtils.readFileToString;
+import static utils.DateUtils.format;
+import static utils.DateUtils.parseFromFile;
 
 @ManagedBean
 @RequestScoped
 public class ChartBean implements Serializable {
-
-
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
     public ChartBean() {
     }
@@ -68,8 +63,8 @@ public class ChartBean implements Serializable {
 
         Stats stats = Stats.create(file);
         double average = (stats.getHappyVotes() * 2 + stats.getNeutralVotes() * 1 + stats.getSadVotes() * 0) / (double) file.length();
-        Date date = customDate(file);
-        return new AverageAndDate(new Double(average), DATE_FORMAT.format(date));
+        Date date = parseFromFile(file);
+        return new AverageAndDate(new Double(average), format(date));
     }
 
     private static class AverageAndDate {
@@ -104,10 +99,10 @@ public class ChartBean implements Serializable {
         sort(files);
         for (File file : files.subList(0, numberOfDays)) {
             Stats stats = Stats.create(file);
-            Date date = customDate(file);
-            happyVotes.set(DATE_FORMAT.format(date), stats.getHappyVotes());
-            neutralVotes.set(DATE_FORMAT.format(date), stats.getNeutralVotes());
-            sadVotes.set(DATE_FORMAT.format(date), stats.getSadVotes());
+            Date date = parseFromFile(file);
+            happyVotes.set(format(date), stats.getHappyVotes());
+            neutralVotes.set(format(date), stats.getNeutralVotes());
+            sadVotes.set(format(date), stats.getSadVotes());
         }
 
         categoryModel.addSeries(happyVotes);
@@ -157,8 +152,4 @@ public class ChartBean implements Serializable {
         }
     }
 
-    private Date customDate(File currentFile) {
-        SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy");
-        return format.parse(currentFile.getName().replace(".txt",""), new ParsePosition(0));
-    }
 }
