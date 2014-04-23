@@ -14,6 +14,16 @@ import static utils.DateUtils.*;
 
 public class YesterdayStats {
 
+    private static final String NEUTRAL_IMAGE_BIG = "neutralbig.jpg";
+    private static final String SAD_IMAGE_BIG = "sadbig.jpg";
+    private static final String HAPPY_IMAGE_BIG = "happybig.jpg";
+
+    private final ScoreCalculator scoreCalculator;
+
+    public YesterdayStats(ScoreCalculator scoreCalculator) {
+        this.scoreCalculator = scoreCalculator;
+    }
+
     public String fileName() {
         Date mostRecentDate = parseFromFile(getMostRecentVoteFile());
         return format(mostRecentDate);
@@ -21,19 +31,20 @@ public class YesterdayStats {
 
     public String mood() throws IOException {
         DayStatistics stats = fromFile(getMostRecentVoteFile());
-        return resolveMood(stats.getHappyVotes(), stats.getNeutralVotes(), stats.getSadVotes());
+        return resolveMood(stats);
+    }
+
+    private String resolveMood(DayStatistics stats) {
+        if (!stats.hasVotes()) {
+            return NEUTRAL_IMAGE_BIG;
+        }
+        final Double score = scoreCalculator.calculate(stats);
+        return asList(SAD_IMAGE_BIG, NEUTRAL_IMAGE_BIG, HAPPY_IMAGE_BIG).get((int) round(score));
     }
 
     private File getMostRecentVoteFile() {
         List<File> voteFiles = asList(new File("votespoll").listFiles());
         sort(voteFiles, fileSorter(DESC));
         return voteFiles.get(0);
-    }
-
-    private String resolveMood(int happyVotes, int neutralVotes, int sadVotes) {
-        int totalVotes = happyVotes + neutralVotes + sadVotes;
-        if (totalVotes == 0) return "neutralbig.jpg";
-        double average = (happyVotes * 2 + neutralVotes * 1 + sadVotes * 0) / (double) totalVotes;
-        return asList("sadbig.jpg", "neutralbig.jpg", "happybig.jpg").get((int) round(average));
     }
 }

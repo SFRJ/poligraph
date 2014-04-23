@@ -51,4 +51,8 @@ public class DayStatistics {
     public int getSadVotes() {
         return sadVotes;
     }
+
+    public boolean hasVotes() {
+        return (happyVotes + neutralVotes + sadVotes) != 0;
+    }
 }

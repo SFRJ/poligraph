@@ -1,5 +1,6 @@
 package gui;
 
+import stats.AverageScoreCalculator;
 import stats.YesterdayStats;
 
 import javax.faces.bean.ManagedBean;
@@ -10,9 +11,9 @@ import java.io.IOException;
 @RequestScoped
 public class YesterdayMood {
 
+    private final YesterdayStats stats = new YesterdayStats(new AverageScoreCalculator());
 
     public String getImageName() {
-        YesterdayStats stats = new YesterdayStats();
         try {
             return stats.mood();
         } catch (IOException e) {
@@ -22,7 +23,6 @@ public class YesterdayMood {
     }
 
     public String getDate() {
-        YesterdayStats stats = new YesterdayStats();
         return stats.fileName();
     }
 

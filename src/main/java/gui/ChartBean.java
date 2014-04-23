@@ -3,6 +3,7 @@ package gui;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
+import stats.AverageScoreCalculator;
 import stats.DayStatistics;
 
 import javax.faces.bean.ManagedBean;
@@ -61,8 +62,8 @@ public class ChartBean implements Serializable {
 
     private AverageAndDate calculateAverage(File file) throws IOException {
         DayStatistics stats = DayStatistics.fromFile(file);
-        double average = (stats.getHappyVotes() * 2 + stats.getNeutralVotes() * 1 + stats.getSadVotes() * 0) / (double) file.length();
-        return new AverageAndDate(new Double(average), format(stats.getDay()));
+        final AverageScoreCalculator scoreCalculator = new AverageScoreCalculator();
+        return new AverageAndDate(scoreCalculator.calculate(stats), format(stats.getDay()));
     }
 
     private static class AverageAndDate {
