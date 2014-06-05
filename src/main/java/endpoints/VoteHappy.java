@@ -18,7 +18,7 @@ public class VoteHappy {
         System.out.println(email + " reached the happy endpoint");
         try {
             return castVote(email, 'H');
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

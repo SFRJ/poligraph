@@ -18,7 +18,7 @@ public class VoteSad {
     public String vote(@QueryParam("email") String email) {
         try {
             castVote(email,'S');
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

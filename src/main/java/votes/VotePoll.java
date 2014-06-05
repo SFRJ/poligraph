@@ -6,22 +6,15 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static votes.VoteValidator.validateAlreadyVoted;
 
 public class VotePoll {
 
-    public static String castVote(String email, char mood) throws IOException {
+    public static String castVote(String email, char mood) throws Exception {
         String outputMessage = null;
-        outputMessage = checkIfThePersonAlreadyVoted(email);
-        outputMessage = outputMessage == null ? performVote(email, mood) : outputMessage;
+        VoteValidator voteValidator = new FileVoteValidator(new File("alreadyvoted.txt"));
+        final boolean canVote = voteValidator.canVote(email);
+        outputMessage = canVote ? performVote(email, mood) : outputMessage;
         return outputMessage;
-    }
-
-    private static String checkIfThePersonAlreadyVoted(String email) throws IOException {
-        if(validateAlreadyVoted(email)) {
-            return  "you already voted today.";
-        }
-        return null;
     }
 
     private static String performVote(String email, char mood) throws IOException {

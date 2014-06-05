@@ -18,7 +18,7 @@ public class VoteNeutral {
     public String vote(@QueryParam("email") String email) {
         try {
             return castVote(email, 'N');
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
