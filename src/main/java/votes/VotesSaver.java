@@ -1,20 +1,23 @@
 package votes;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
 public class VotesSaver {
 
-    private VotingResultsProvider votingResultsProvider;
+    private MoodPersister moodPersister;
+    private AlreadyVotedEmailPersister alreadyVotedEmailPersister;
 
-    public VotesSaver(VotingResultsProvider votingResultsProvider) {
-        this.votingResultsProvider = votingResultsProvider;
+    /*
+    From OO Design:
+    Good practice to pass interfaces to methods and constructors, and delegate the implementation detal to specific implementations of those.
+    - Composition over inheritance
+    - Program to the interface and not to the realization
+    */
+    public VotesSaver(MoodPersister moodPersister, AlreadyVotedEmailPersister alreadyVotedEmailPersister) {
+        this.moodPersister = moodPersister;
+        this.alreadyVotedEmailPersister = alreadyVotedEmailPersister;
     }
 
-    public void castVote(String votersEmail, char mood) throws IOException {
-        final OutputStream outputStream = votingResultsProvider.provide();
-        outputStream.write(mood);
-        outputStream.flush();
+    public void castVote(String votersEmail, char mood) throws Exception {
+        moodPersister.save(mood);
+        alreadyVotedEmailPersister.save(votersEmail);
     }
 }

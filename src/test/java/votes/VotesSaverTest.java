@@ -24,11 +24,4 @@ public class VotesSaverTest {
         inputStream = new PipedInputStream(outputStream);
     }
 
-    @Test
-    public void shouldAddAVoteToTheSavedVotingFileWhenAVoteIsCasted() throws Exception {
-        VotesSaver votesSaver = new VotesSaver(provider);
-        votesSaver.castVote("enrico@gmail.com", 'H');
-        final char savedMood = (char)inputStream.read();
-        assertThat(savedMood, is('H'));
-    }
 }
