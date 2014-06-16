@@ -9,15 +9,21 @@ import java.util.Date;
 
 public class VotePoll {
 
-    public static String castVote(Vote vote) throws Exception {
+    private static VoteValidator voteValidator;
+
+    public VotePoll(VoteValidator voteValidator) {
+        this.voteValidator = voteValidator;
+    }
+
+
+    public String castVote(Vote vote) throws Exception {
         String outputMessage = null;
-        VoteValidator voteValidator = new FileVoteValidator(new File("alreadyvoted.txt"));
         final boolean canVote = voteValidator.canVote(vote.getEmail());
         outputMessage = canVote ? performVote(vote.getEmail(), vote.getMood()) : outputMessage;
         return outputMessage;
     }
 
-    private static String performVote(String email, char mood) throws IOException {
+    private String performVote(String email, char mood) throws IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
         String date = sdf.format(new Date());
         String pathToVotesPoll = "votespoll";
@@ -35,7 +41,7 @@ public class VotePoll {
         return "Thanks for your feedback!";
     }
 
-    private static void writeVotesToFile(File votesFile, char mood) throws IOException {
+    private void writeVotesToFile(File votesFile, char mood) throws IOException {
         if(!votesFile.exists()) {
             votesFile.createNewFile();
         }
@@ -45,7 +51,7 @@ public class VotePoll {
         System.out.println("voting " + mood);
     }
 
-    private static void addEmailToAlreadyVotedFile(String email) throws IOException {
+    private void addEmailToAlreadyVotedFile(String email) throws IOException {
         FileWriter fileWriter = new FileWriter(new File("alreadyvoted.txt"),true);
         fileWriter.write(email + System.lineSeparator());
         fileWriter.close();
