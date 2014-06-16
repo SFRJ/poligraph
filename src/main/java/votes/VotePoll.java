@@ -6,40 +6,39 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static utils.DateUtils.currentDateAsString;
+
 
 public class VotePoll {
 
     private final File alreadyVotedFile;
-    private VoteValidator voteValidator;
+    private final VoteValidator voteValidator;
+    private final File VOTES_POLL_FILES_DIRECTORY = new File("votespoll");
+    private final File todaysVotesFile;
 
     public VotePoll() {
         alreadyVotedFile = new File("alreadyvoted.txt");
         voteValidator = new FileVoteValidator(alreadyVotedFile);
+        todaysVotesFile = todaysVotingFile(new File(VOTES_POLL_FILES_DIRECTORY.getName() + "/" + currentDateAsString() + ".txt"));
     }
 
     public String castVote(Vote vote) throws Exception {
-        String outputMessage = null;
-        final boolean canVote = voteValidator.canVote(vote.getEmail());
-        outputMessage = canVote ? performVote(vote.getEmail(), vote.getMood()) : outputMessage;
-        return outputMessage;
+        if (voteValidator.canVote(vote.getEmail())) {
+            if (VOTES_POLL_FILES_DIRECTORY.exists()) {
+                writeVotesToFile(todaysVotesFile, vote.getMood());
+                addEmailToAlreadyVotedFile(vote.getEmail());
+            }
+            return "Thanks for your feedback!";
+        } else {
+            throw new AlreadyVotedException(vote.getEmail() + " already voted today");
+        }
     }
 
-    private String performVote(String email, char mood) throws IOException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
-        String date = sdf.format(new Date());
-        String pathToVotesPoll = "votespoll";
-        File votespoll = new File(pathToVotesPoll);
-        File todaysVotingFolder = new File(pathToVotesPoll);
-        File votes = new File(pathToVotesPoll+ "/" + date + ".txt");
-
-        if(votespoll.exists()) {
-            if(!todaysVotingFolder.exists()) {
-                todaysVotingFolder.mkdir();
-            }
-            writeVotesToFile(votes,mood);
-            addEmailToAlreadyVotedFile(email);
+    private File todaysVotingFile(File todaysVotingFile) {
+        if (!todaysVotingFile.exists()) {
+            todaysVotingFile.mkdir();
         }
-        return "Thanks for your feedback!";
+        return todaysVotingFile;
     }
 
     private void writeVotesToFile(File votesFile, char mood) throws IOException {

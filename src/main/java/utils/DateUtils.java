@@ -38,4 +38,11 @@ public class DateUtils {
             }
         };
     }
+
+    public static String currentDateAsString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
+        String date = sdf.format(new Date());
+        return date;
+    }
+
 }
