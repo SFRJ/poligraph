@@ -1,5 +1,7 @@
 package endpoints;
 
+import votes.Vote;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -17,7 +19,7 @@ public class VoteHappy {
     public String vote(@QueryParam("email") String email) {
         System.out.println(email + " reached the happy endpoint");
         try {
-            return castVote(email, 'H');
+            return castVote(new Vote(email, 'H'));
         } catch (Exception e) {
             e.printStackTrace();
         }

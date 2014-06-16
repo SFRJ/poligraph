@@ -9,11 +9,11 @@ import java.util.Date;
 
 public class VotePoll {
 
-    public static String castVote(String email, char mood) throws Exception {
+    public static String castVote(Vote vote) throws Exception {
         String outputMessage = null;
         VoteValidator voteValidator = new FileVoteValidator(new File("alreadyvoted.txt"));
-        final boolean canVote = voteValidator.canVote(email);
-        outputMessage = canVote ? performVote(email, mood) : outputMessage;
+        final boolean canVote = voteValidator.canVote(vote.getEmail());
+        outputMessage = canVote ? performVote(vote.getEmail(), vote.getMood()) : outputMessage;
         return outputMessage;
     }
 

@@ -1,5 +1,7 @@
 package endpoints;
 
+import votes.Vote;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -17,7 +19,7 @@ public class VoteNeutral {
     @GET
     public String vote(@QueryParam("email") String email) {
         try {
-            return castVote(email, 'N');
+            return castVote(new Vote(email, 'N'));
         } catch (Exception e) {
             e.printStackTrace();
         }

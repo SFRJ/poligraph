@@ -8,6 +8,6 @@ public class VotePollTest {
 
         @Test
         public void blah() throws Exception{
-            castVote("djordje.popovic@bskyb.com", 'N');
+            castVote(new Vote("djordje.popovic@bskyb.com", 'N'));
         }
 }
