@@ -1,13 +1,11 @@
 package endpoints;
 
-import votes.FileVoteValidator;
 import votes.Vote;
 import votes.VotePoll;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
-import java.io.File;
 
 /**
     Neutral votes will arrive to this endpoint
@@ -19,7 +17,7 @@ public class VoteNeutral {
     @GET
     public String vote(@QueryParam("email") String email) {
         try {
-            VotePoll votePoll = new VotePoll(new FileVoteValidator(new File("alreadyvoted.txt")));
+            VotePoll votePoll = new VotePoll();
             return votePoll.castVote(new Vote(email, 'N'));
         } catch (Exception e) {
             e.printStackTrace();

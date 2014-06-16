@@ -9,12 +9,13 @@ import java.util.Date;
 
 public class VotePoll {
 
-    private static VoteValidator voteValidator;
+    private final File alreadyVotedFile;
+    private VoteValidator voteValidator;
 
-    public VotePoll(VoteValidator voteValidator) {
-        this.voteValidator = voteValidator;
+    public VotePoll() {
+        alreadyVotedFile = new File("alreadyvoted.txt");
+        voteValidator = new FileVoteValidator(alreadyVotedFile);
     }
-
 
     public String castVote(Vote vote) throws Exception {
         String outputMessage = null;
@@ -52,7 +53,7 @@ public class VotePoll {
     }
 
     private void addEmailToAlreadyVotedFile(String email) throws IOException {
-        FileWriter fileWriter = new FileWriter(new File("alreadyvoted.txt"),true);
+        FileWriter fileWriter = new FileWriter(alreadyVotedFile,true);
         fileWriter.write(email + System.lineSeparator());
         fileWriter.close();
     }
